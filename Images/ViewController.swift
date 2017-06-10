@@ -7,7 +7,7 @@ class ViewController: UIViewController {
     
     fileprivate var images = [ImageRecord]()
     fileprivate let pendingOperations = PendingOperations()
-    fileprivate let url = "http://placehold.it/375x150?text="
+    fileprivate let url = "http://via.placeholder.com/375x150?text="
     fileprivate let numberOfImages = 100
     fileprivate let rowHeight: CGFloat = 100.0
     
@@ -27,14 +27,13 @@ class ViewController: UIViewController {
     
     func fetchImages() {
         
-        for i in 0..<numberOfImages {
+        for i in 1..<numberOfImages + 1 {
             let imageURL = URL(string:url + String(i))
             let photoRecord = ImageRecord(url:imageURL!)
             self.images.append(photoRecord)
         }
         self.tableView.reloadData()
     }
-    
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -46,7 +45,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     
+        
         let cellIdentifier = "ImageCell"
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
@@ -61,12 +60,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             cell.accessoryView = indicator
             indicator.startAnimating()
-             cell.textLabel?.text = "Loading..."
+            cell.textLabel?.text = "Loading..."
             if (!tableView.isDragging && !tableView.isDecelerating) {
                 self.startDownloadForRecord(photoDetails, indexPath: indexPath)
             }
         case .downloaded:
-            cell.textLabel?.text = "Image \(indexPath.row)"
+            cell.textLabel?.text = "Image \(indexPath.row + 1)"
         }
         return cell
     }
@@ -78,7 +77,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     // MARK: - UIScrollViewDelegate
-   
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         suspendAllOperations()
     }
@@ -143,8 +142,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             }
             DispatchQueue.main.async(execute: {
                 
-                    self.pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
-                    self.tableView.reloadRows(at: [indexPath], with: .fade)
+                self.pendingOperations.downloadsInProgress.removeValue(forKey: indexPath)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
             })
             
         }

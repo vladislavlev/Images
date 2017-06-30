@@ -12,7 +12,6 @@ class PendingOperations: NSObject {
     lazy var downloadsInProgress = [IndexPath:Operation]()
     lazy var downloadQueue:OperationQueue = {
         var queue = OperationQueue()
-        queue.name = downloadQueueName
         return queue
     }()
 }

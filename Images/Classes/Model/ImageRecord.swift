@@ -16,4 +16,9 @@ class ImageRecord {
     init(url:URL) {
         self.url = url
     }
+    
+    func createDescriptionForIndexPath(indexPath: IndexPath) {
+    
+        self.description = "Image \(indexPath.row + 1)" as NSString
+    }
 }
